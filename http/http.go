@@ -20,10 +20,10 @@ func LogPublicIpAddress(l *log.Logger) error {
 	}
 
 	if l != nil {
-		l.Printf("Listening on %v%n", strings.TrimRight(string(ipBytes), "\n"))
+		l.Printf("Listening on %v\n", strings.TrimRight(string(ipBytes), "\n"))
 	} else {
 		// This will use the standard logger, which prints to os.Stderr
-		log.Printf("Listening on %v%n", strings.TrimRight(string(ipBytes), "\n"))
+		log.Printf("Listening on %v\n", strings.TrimRight(string(ipBytes), "\n"))
 	}
 	return nil
 }

@@ -12,7 +12,7 @@ func TestLogPublicIpAddress(t *testing.T) {
 	logger := log.New(&buf, "PRE: ", 0)
 	LogPublicIpAddress(logger)
 
-	matched, err := regexp.Match(`PRE: Listening on [0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}`, buf.Bytes())
+	matched, err := regexp.Match(`PRE: Listening on [0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\n`, buf.Bytes())
 	if err != nil {
 		t.Fatalf("Error matching logger output to regexp --\n%s", err.Error())
 	}
