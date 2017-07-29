@@ -73,7 +73,7 @@ var statusMap map[int]string = map[int]string{
 	http.StatusNetworkAuthenticationRequired: "511 Network Authentication Required",
 }
 
-func LogPublicIpAddress(l *log.Logger) error {
+func LogPublicIpAddress(l *log.Logger, port int) error {
 	// NOTE: This function is intended to print the public ip of a server, so an internet connection is assumed
 	res, err := http.Get("http://ipinfo.io/ip")
 	if err != nil {
@@ -85,11 +85,15 @@ func LogPublicIpAddress(l *log.Logger) error {
 		return err
 	}
 
+	var portString string
+	if port != 0 {
+		portString = fmt.Sprintf(":%d", port)
+	}
 	if l != nil {
-		l.Printf("Listening on %v\n", strings.TrimRight(string(ipBytes), "\n"))
+		l.Printf("Listening on %v%s\n", strings.TrimRight(string(ipBytes), "\n"), portString)
 	} else {
 		// This will use the standard logger, which prints to os.Stderr
-		log.Printf("Listening on %v\n", strings.TrimRight(string(ipBytes), "\n"))
+		log.Printf("Listening on %v%s\n", strings.TrimRight(string(ipBytes), "\n"), portString)
 	}
 	return nil
 }
