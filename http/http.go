@@ -74,23 +74,20 @@ func LogPublicIpAddress(l *log.Logger, port int) error {
 // SimpleJSONResponse writes the provided HTTP status code back to the client, formats
 // the message into a simple JSON object, and writes that back to the client
 //
-// 	ExampleSimpleJSONResponse() {
-// 		func SomeHandler(w http.ResponseWriter, r *http.Request) {
-// 			_, err := returnsErr()
-// 			if err != nil {
-// 				SimpleJSONResponse(w, http.StatusInternalServerError, "Something went wrong")
-// 				return
-// 			}
-// 			// Output: {"msg":"Something went wrong"}
-// 		}
-// 	}
-func SimpleJSONResponse(w http.ResponseWriter, status int, message string) {
+// 	func HealthHandler(w http.ResponseWriter, r *http.Request) {
+// 		_, err := SimpleJSONResponse(w, http.StatusOK, "Still alive")
+//		if err != nil {
+//			log.Printf("ERR: write response to client failed: %s", err)
+//		}
+//	}
+func SimpleJSONResponse(w http.ResponseWriter, status int, message string) (int, error) {
 	w.WriteHeader(status)
-	fmt.Fprintf(w, `{"msg":%q}`, message)
+	return fmt.Fprintf(w, `{"msg":%q}`, message)
 }
 
 // SimpleHttpResponse writes the provided HTTP status code back to the client, formats
 // the message into a simple JSON object, and writes that back to the client
+//
 // Deprecated: Use SimpleJSONResponse instead
 func SimpleHttpResponse(w http.ResponseWriter, status int, msg string) {
 	// This just returns a status header and a JSON object with a single field - "status"

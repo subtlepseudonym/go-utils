@@ -3,6 +3,8 @@ package http
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"regexp"
@@ -82,6 +84,24 @@ func TestSimpleJSONResponse(t *testing.T) {
 		t.Errorf(`Didn't receive expected content ( {status: "200 OK", msg: "Still alive"} ) in json response: %+v`, simpleJson)
 		t.Fail()
 	}
+}
+
+// Below, we've set up a simple server that uses SimpleJSONResponse to return a status
+// JSON with the message "Still alive"
+func ExampleSimpleJSONResponse() {
+	go func() {
+		err := http.ListenAndServe(":50001", http.HandlerFunc(
+			func(w http.ResponseWriter, r *http.Request) {
+				SimpleJSONResponse(w, http.StatusOK, "Still alive")
+			}))
+		panic(err)
+	}()
+
+	// Ignoring errors for the sake of a succinct example
+	res, _ := http.Get("http://localhost:50001")
+	b, _ := ioutil.ReadAll(res.Body)
+	fmt.Print(string(b))
+	// Output: {"msg":"Still alive"}
 }
 
 // TestSimpleHttpResponse sets up a mocked server that uses SimpleHttpResponse to return
